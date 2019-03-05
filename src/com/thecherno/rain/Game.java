@@ -1,5 +1,6 @@
 package com.thecherno.rain;
 
+import com.thecherno.rain.entity.mob.Player;
 import com.thecherno.rain.graphics.Screen;
 import com.thecherno.rain.input.Keyboard;
 import com.thecherno.rain.level.Level;
@@ -23,6 +24,7 @@ public class Game extends Canvas implements Runnable {
     private JFrame frame;
     private Keyboard key;
     private Level level;
+    private Player player;
     private boolean running = false;
 
     private Screen screen;
@@ -38,6 +40,7 @@ public class Game extends Canvas implements Runnable {
         frame = new JFrame();
         key = new Keyboard();
         level = new RandomLevel(64, 64);
+        player = new Player(key);
 
         addKeyListener(key);
     }
@@ -92,10 +95,7 @@ public class Game extends Canvas implements Runnable {
 
     public void update(){
         key.update();
-        if (key.up) y--;
-        if (key.down) y++;
-        if (key.left) x--;
-        if (key.right)x++;
+        player.update();
     }
 
     public void render(){
@@ -106,7 +106,10 @@ public class Game extends Canvas implements Runnable {
         }
 
         screen.clear();
-        level.render(x, y, screen);
+        int xScroll = player.x - screen.width/2;
+        int yScroll = player.y - screen.height/2;
+        level.render(xScroll, yScroll, screen);
+        player.render(screen);
 
         for (int i=0; i<pixels.length; i++){
             pixels[i] = screen.pixels[i];
@@ -114,6 +117,8 @@ public class Game extends Canvas implements Runnable {
 
         Graphics g = bs.getDrawGraphics();
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Verdana", 0, 50));
         g.dispose();
         bs.show();
     }

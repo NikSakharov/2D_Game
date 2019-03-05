@@ -20,19 +20,15 @@ public class Level {
     }
 
     protected void generateLevel(){
-
     }
 
     private void loadLevel(String path){
-
     }
 
     public void update() {
-
     }
 
     private void time() {
-
     }
 
     public void render(int xScroll, int yScroll, Screen screen) {
