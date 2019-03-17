@@ -1,22 +1,32 @@
 package com.thecherno.rain.level;
 
+import com.thecherno.rain.entity.Entity;
+import com.thecherno.rain.entity.projectile.Projectile;
 import com.thecherno.rain.graphics.Screen;
 import com.thecherno.rain.level.tile.Tile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Level {
 
     protected int width, height;
+    protected int[] tilesInt;
     protected int[] tiles;
+
+    private List<Entity> entities = new ArrayList<Entity>();
+    private List<Projectile> projectiles = new ArrayList<Projectile>();
 
     public Level(int width, int height) {
         this.width = width;
         this.height = height;
-        tiles = new int[width * height];
+        tilesInt = new int[width * height];
         generateLevel();
     }
 
     public Level(String path) {
         loadLevel(path);
+        generateLevel();
     }
 
     protected void generateLevel(){
@@ -26,6 +36,16 @@ public class Level {
     }
 
     public void update() {
+        for(int i = 0; i < entities.size(); i++){
+            entities.get(i).update();
+        }
+        for (int i = 0; i < projectiles.size(); i++) {
+            projectiles.get(i).update();
+        }
+    }
+
+    public List<Projectile> getProjectiles() {
+        return projectiles;
     }
 
     private void time() {
@@ -43,13 +63,34 @@ public class Level {
                 getTile(x, y).render(x,y,screen);
             }
         }
+
+        for (int i = 0; i < entities.size(); i++) {
+            entities.get(i).render(screen);
+        }
+        for (int i = 0; i < projectiles.size(); i++) {
+            projectiles.get(i).render(screen);
+        }
     }
 
+    public void add(Entity e) {
+        entities.add(e);
+    }
+
+    public void addProjectile(Projectile p) {
+        projectiles.add(p);
+    }
+
+    //Grass = 0xff00ff0c
+    //Flower = 0xffffd800
+    //Rock = 0xff7f3300
     public Tile getTile(int x, int y) {
         if (x < 0 || y < 0 || x >= width || y >= height) return Tile.voidTile;
-        if(tiles[x+y*width] == 0) return Tile.grass;
-        if(tiles[x+y*width] == 1) return Tile.flower;
-        if(tiles[x+y*width] == 2) return Tile.rock;
+        if(tiles[x+y*width] == Tile.col_spawn_floor) return Tile.spawn_floor;
+        if(tiles[x+y*width] == Tile.col_spawn_grass) return Tile.spawn_grass;
+        if(tiles[x+y*width] == Tile.col_spawn_hedge) return Tile.spawn_hedge;
+        if(tiles[x+y*width] == Tile.col_spawn_wall1) return Tile.spawn_wall1;
+        if(tiles[x+y*width] == Tile.col_spawn_wall2) return Tile.spawn_wall2;
+        if(tiles[x+y*width] == Tile.col_spawn_water) return Tile.spawn_water;
         return Tile.voidTile;
     }
 }

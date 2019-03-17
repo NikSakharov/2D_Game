@@ -3,8 +3,11 @@ package com.thecherno.rain;
 import com.thecherno.rain.entity.mob.Player;
 import com.thecherno.rain.graphics.Screen;
 import com.thecherno.rain.input.Keyboard;
+import com.thecherno.rain.input.Mouse;
 import com.thecherno.rain.level.Level;
 import com.thecherno.rain.level.RandomLevel;
+import com.thecherno.rain.level.SpawnLevel;
+import com.thecherno.rain.level.TileCoordinate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,9 +18,9 @@ import java.awt.image.DataBufferInt;
 
 public class Game extends Canvas implements Runnable {
 
-    public static int width = 300;
-    public static int height = width / 16 * 9;
-    public static int scale = 3;
+    private static int width = 300;
+    private static int height = 168;
+    private static int scale = 3;
     public static String title = "Rain";
 
     private Thread thread;
@@ -39,10 +42,24 @@ public class Game extends Canvas implements Runnable {
         screen = new Screen(width, height);
         frame = new JFrame();
         key = new Keyboard();
-        level = new RandomLevel(64, 64);
-        player = new Player(key);
+        level = new SpawnLevel("src\\res\\levels\\spawn.png");
+        TileCoordinate playerSpawn = new TileCoordinate(20,61);
+        player = new Player(playerSpawn.x(),playerSpawn.y(), key);
+        player.init(level);
 
         addKeyListener(key);
+
+        Mouse mouse = new Mouse();
+        addMouseListener(mouse);
+        addMouseMotionListener(mouse);
+    }
+
+    public static int getWindowWidth() {
+        return width * scale;
+    }
+
+    public static int getWindowHeight() {
+        return height * scale;
     }
 
     public synchronized void start(){
@@ -96,6 +113,7 @@ public class Game extends Canvas implements Runnable {
     public void update(){
         key.update();
         player.update();
+        level.update();
     }
 
     public void render(){
@@ -119,6 +137,8 @@ public class Game extends Canvas implements Runnable {
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
         g.setColor(Color.WHITE);
         g.setFont(new Font("Verdana", 0, 50));
+        // g.fillRect(Mouse.getX() - 32, Mouse.getY() - 32, 64, 64);
+        //if(Mouse.getButton() != -1) g.drawString("Button: " + Mouse.getButton(), 80, 80);
         g.dispose();
         bs.show();
     }
