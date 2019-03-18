@@ -2,6 +2,7 @@ package com.thecherno.rain;
 
 import com.thecherno.rain.entity.mob.Player;
 import com.thecherno.rain.graphics.Screen;
+import com.thecherno.rain.graphics.Sprite;
 import com.thecherno.rain.input.Keyboard;
 import com.thecherno.rain.input.Mouse;
 import com.thecherno.rain.level.Level;
@@ -15,6 +16,7 @@ import java.awt.Canvas;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.Random;
 
 public class Game extends Canvas implements Runnable {
 

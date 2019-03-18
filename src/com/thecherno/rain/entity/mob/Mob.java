@@ -1,6 +1,7 @@
 package com.thecherno.rain.entity.mob;
 
 import com.thecherno.rain.entity.Entity;
+import com.thecherno.rain.entity.particle.Particle;
 import com.thecherno.rain.entity.projectile.Projectile;
 import com.thecherno.rain.entity.projectile.WizardProjectile;
 import com.thecherno.rain.graphics.Sprite;
@@ -39,7 +40,7 @@ public abstract class Mob extends Entity {
     protected void shoot(int x, int y, double dir) {
         //dir *= 180 / Math.PI;
         Projectile p = new WizardProjectile( x, y, dir);
-         level.addProjectile(p);
+         level.add(p);
     }
 
     private boolean collision(int xa,int ya) {
