@@ -69,7 +69,7 @@ public class Screen {
                 if(xa < -p.getSpriteSize() || xa >= width || ya < 0 || ya >= height) break;
                 if(xa < 0) xa = 0;
                 int col = p.getSprite().pixels [x + y * p.getSprite().SIZE];
-                if(col != 0xffFF00DC){
+                if(col != 0xffFF00FF){
                     pixels[xa + ya * width] = col;
                 }
             }
@@ -86,7 +86,7 @@ public class Screen {
                 if(xa < -32 || xa >= width || ya < 0 || ya >= height) break;
                 if(xa < 0) xa = 0;
                 int col = sprite.pixels[x + y * 32];
-                if (col != 000000) pixels[xa + ya * width] = col;
+                if (col != 0xffFF00FF) pixels[xa + ya * width] = col;
             }
         }
     }
