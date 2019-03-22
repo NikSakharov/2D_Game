@@ -1,5 +1,7 @@
 package com.thecherno.rain.level;
 
+import com.thecherno.rain.entity.mob.Dummy;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -22,6 +24,7 @@ public class SpawnLevel extends Level {
             e.printStackTrace();
             System.out.println("Exception! Could not load level file");
         }
+        add(new Dummy(21,55));
     }
 
     protected void generateLevel() {

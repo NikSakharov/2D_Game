@@ -44,8 +44,6 @@ public class Player extends Mob {
         else animSprite.setFrame(0);
         if(fireRate > 0) fireRate--;
         int xa = 0, ya = 0;
-        if(anim < 700) anim++;
-        else anim = 0;
         if(input.up) {
             animSprite = up;
             ya--;
@@ -92,49 +90,8 @@ public class Player extends Mob {
     }
 
     public void render(Screen screen) {
-        /*if(dir == 0) {
-            sprite = Sprite.player_back;
-            if(walking){
-                if(anim % 20 > 10) {
-                    sprite = Sprite.player_back_1;
-                } else {
-                    sprite = Sprite.player_back_2;
-                }
-            }
-        }
-        if(dir == 1) {
-            sprite = Sprite.player_right;
-            if(walking) {
-                if(anim % 20 > 10) {
-                    sprite = Sprite.player_right_1;
-                } else {
-                    sprite = Sprite.player_right_2;
-                }
-            }
-        }
-        if(dir == 2) {
-            sprite = Sprite.player_forward;
-            if(walking) {
-                if(anim % 20 > 10) {
-                    sprite = Sprite.player_forward_1;
-                }else {
-                     sprite = Sprite.player_forward_2;
-                }
-            }
-        }
-
-        if(dir == 3){
-            sprite = Sprite.player_left;
-            if(walking) {
-                if(anim % 20 > 10) {
-                    sprite = Sprite.player_left_1;
-                } else {
-                    sprite = Sprite.player_left_2;
-                }
-            }
-        }*/
         sprite = animSprite.getSprite();
-        screen.renderPlayer(x - 16, y - 16, sprite);
+        screen.renderMob(x - 16, y - 16, sprite);
     }
 
 }

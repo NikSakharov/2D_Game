@@ -4,6 +4,7 @@ import com.thecherno.rain.entity.Entity;
 import com.thecherno.rain.entity.particle.Particle;
 import com.thecherno.rain.entity.projectile.Projectile;
 import com.thecherno.rain.entity.projectile.WizardProjectile;
+import com.thecherno.rain.graphics.Screen;
 import com.thecherno.rain.graphics.Sprite;
 
 import java.util.ArrayList;
@@ -12,9 +13,14 @@ import java.util.List;
 public abstract class Mob extends Entity {
 
     protected Sprite sprite;
-    protected int dir = 0;
     protected boolean moving = false;
     protected boolean walking = false;
+
+    protected enum Direction {
+        UP, DOWN, LEFT, RIGHT
+    }
+
+    protected Direction dir;
 
     public void move(int xa, int ya){
         if (xa != 0 && ya != 0) {
@@ -23,10 +29,10 @@ public abstract class Mob extends Entity {
             return;
         }
 
-        if(xa > 0) dir = 1;
-        if(xa < 0) dir = 3;
-        if(ya > 0) dir = 2;
-        if(ya < 0) dir = 0;
+        if(xa > 0) dir = Direction.RIGHT;
+        if(xa < 0) dir = Direction.LEFT;
+        if(ya > 0) dir = Direction.DOWN;
+        if(ya < 0) dir = Direction.UP;
 
         if(!collision(xa,ya)){
             x += xa;
@@ -34,8 +40,9 @@ public abstract class Mob extends Entity {
         }
     }
 
-    public void update() {
-    }
+    public abstract void update();
+
+    public abstract void render(Screen screen);
 
     protected void shoot(int x, int y, double dir) {
         //dir *= 180 / Math.PI;
@@ -53,6 +60,4 @@ public abstract class Mob extends Entity {
         return solid;
     }
 
-    public void render(){
-    }
 }
