@@ -12,7 +12,6 @@ import java.util.List;
 
 public abstract class Mob extends Entity {
 
-    protected Sprite sprite;
     protected boolean moving = false;
     protected boolean walking = false;
 

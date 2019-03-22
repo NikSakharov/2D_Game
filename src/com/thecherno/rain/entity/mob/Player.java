@@ -1,6 +1,7 @@
 package com.thecherno.rain.entity.mob;
 
 import com.thecherno.rain.Game;
+import com.thecherno.rain.entity.Entity;
 import com.thecherno.rain.entity.projectile.Projectile;
 import com.thecherno.rain.entity.projectile.WizardProjectile;
 import com.thecherno.rain.graphics.AnimatedSprite;
@@ -9,6 +10,8 @@ import com.thecherno.rain.graphics.Sprite;
 import com.thecherno.rain.graphics.SpriteSheet;
 import com.thecherno.rain.input.Keyboard;
 import com.thecherno.rain.input.Mouse;
+
+import java.util.List;
 
 public class Player extends Mob {
 
