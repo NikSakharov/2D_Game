@@ -2,6 +2,7 @@ package com.thecherno.rain.level;
 
 import com.thecherno.rain.entity.mob.Chaser;
 import com.thecherno.rain.entity.mob.Dummy;
+import com.thecherno.rain.entity.mob.Star;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -26,6 +27,7 @@ public class SpawnLevel extends Level {
             System.out.println("Exception! Could not load level file");
         }
         add(new Chaser(21,55));
+        add(new Star(17, 35));
         for(int i = 0; i < 5; i++){
             add(new Dummy(21, 40));
         }

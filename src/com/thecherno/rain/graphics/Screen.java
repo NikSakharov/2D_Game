@@ -3,6 +3,7 @@ package com.thecherno.rain.graphics;
 import com.thecherno.rain.entity.mob.Chaser;
 import com.thecherno.rain.entity.mob.Mob;
 import com.thecherno.rain.entity.mob.Player;
+import com.thecherno.rain.entity.mob.Star;
 import com.thecherno.rain.entity.projectile.Projectile;
 import com.thecherno.rain.level.tile.Tile;
 
@@ -91,6 +92,7 @@ public class Screen {
                 if(xa < 0) xa = 0;
                 int col = mob.getSprite().pixels[xs + ys * 32];
                 if ((mob instanceof Chaser) && col == 0xff472BBF) col = 0xffBA0015;
+                if ((mob instanceof Star) && col == 0xff472BBF) col = 0xffE8E83A;
                 if (col != 0xffFF00FF) pixels[xa + ya * width] = col;
             }
         }
