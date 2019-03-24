@@ -188,7 +188,7 @@ public class Level {
                 if (at == null) continue;
                 if (at.solid()) continue;
                 Vector2i a = new Vector2i(x + xi, y + yi);
-                double gCost = current.gCost + getDistance(current.tile, a);
+                double gCost = current.gCost + (getDistance(current.tile, a) == 1 ? 1 : 0.95);
                 double hCost = getDistance(a, goal);
                 Node node = new Node(a, current, gCost, hCost);
                 if (vecInList(closedList, a) && gCost >= node.gCost) continue;
@@ -214,13 +214,13 @@ public class Level {
 
     public List<Entity> getEntities(Entity e, int radius) {
         List<Entity> result = new ArrayList<Entity>();
-        int ex = (int) e.getX();
-        int ey = (int) e.getY();
+        int ex = e.getX();
+        int ey = e.getY();
         for(int i = 0; i < entities.size(); i++){
             Entity entity = entities.get(i);
-            int x = (int) entity.getX();
-            int y = (int) entity.getY();
-
+            if(entity.equals(e))continue;
+            int x = entity.getX();
+            int y = entity.getY();
             int dx = Math.abs(x - ex);
             int dy = Math.abs(y - ey);
             double distance = Math.sqrt((dx * dx) + (dy * dy));
@@ -231,12 +231,12 @@ public class Level {
 
     public List<Player> getPlayers(Entity e, int radius){
         List<Player> result = new ArrayList<Player>();
-        int ex = (int) e.getX();
-        int ey = (int) e.getY();
+        int ex = e.getX();
+        int ey = e.getY();
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
-            int x = (int) player.getX();
-            int y = (int) player.getY();
+            int x = player.getX();
+            int y = player.getY();
             int dx = Math.abs(x - ex);
             int dy = Math.abs(y - ey);
             double distance = Math.sqrt((dx * dx) + (dy * dy));
