@@ -2,6 +2,7 @@ package com.thecherno.rain;
 
 import com.thecherno.rain.entity.mob.Player;
 import com.thecherno.rain.graphics.Screen;
+import com.thecherno.rain.graphics.Font;
 import com.thecherno.rain.graphics.Sprite;
 import com.thecherno.rain.input.Keyboard;
 import com.thecherno.rain.input.Mouse;
@@ -16,7 +17,7 @@ import java.awt.Canvas;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.util.Random;
+
 
 public class Game extends Canvas implements Runnable {
 
@@ -33,7 +34,7 @@ public class Game extends Canvas implements Runnable {
     private boolean running = false;
 
     private Screen screen;
-
+    private Font font;
     private BufferedImage image = new BufferedImage(width, height,BufferedImage.TYPE_INT_RGB);
     private int[] pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 
@@ -48,6 +49,7 @@ public class Game extends Canvas implements Runnable {
         TileCoordinate playerSpawn = new TileCoordinate(20,61);
         player = new Player(playerSpawn.x(),playerSpawn.y(), key);
         level.add(player);
+        font = new Font();
 
         addKeyListener(key);
 
@@ -128,6 +130,8 @@ public class Game extends Canvas implements Runnable {
         double xScroll = player.getX() - screen.width/2;
         double yScroll = player.getY() - screen.height/2;
         level.render((int) xScroll,(int) yScroll, screen);
+        font.render(50,50,-3,"Hey\nbro!",screen);
+
 
         for (int i=0; i<pixels.length; i++){
             pixels[i] = screen.pixels[i];
@@ -135,8 +139,6 @@ public class Game extends Canvas implements Runnable {
 
         Graphics g = bs.getDrawGraphics();
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Verdana", 0, 50));
         // g.fillRect(Mouse.getX() - 32, Mouse.getY() - 32, 64, 64);
         //if(Mouse.getButton() != -1) g.drawString("Button: " + Mouse.getButton(), 80, 80);
         g.dispose();

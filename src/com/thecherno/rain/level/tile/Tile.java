@@ -10,7 +10,7 @@ public class Tile {
 
     public static Tile grass = new GrassTile(Sprite.grass);
     public static Tile flower = new FlowerTile(Sprite.flower);
-    public static Tile rock = new RickTile(Sprite.rock);
+    public static Tile rock = new RockTile(Sprite.rock);
     public static Tile voidTile = new VoidTile(Sprite.voidSprite);
 
     public static Tile spawn_grass = new SpawnGrassTile(Sprite.spawn_grass);
