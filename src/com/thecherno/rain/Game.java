@@ -4,6 +4,7 @@ import com.thecherno.rain.entity.mob.Player;
 import com.thecherno.rain.graphics.Screen;
 import com.thecherno.rain.graphics.Font;
 import com.thecherno.rain.graphics.Sprite;
+import com.thecherno.rain.graphics.ui.UIManager;
 import com.thecherno.rain.input.Keyboard;
 import com.thecherno.rain.input.Mouse;
 import com.thecherno.rain.level.Level;
@@ -21,7 +22,7 @@ import java.awt.image.DataBufferInt;
 
 public class Game extends Canvas implements Runnable {
 
-    private static int width = 300;
+    private static int width = 300 - 80;
     private static int height = 168;
     private static int scale = 3;
     public static String title = "Rain";
@@ -33,23 +34,24 @@ public class Game extends Canvas implements Runnable {
     private Player player;
     private boolean running = false;
 
+    private static UIManager uiManager;
+
     private Screen screen;
-    private Font font;
     private BufferedImage image = new BufferedImage(width, height,BufferedImage.TYPE_INT_RGB);
     private int[] pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 
     public Game(){
-        Dimension size = new Dimension(width*scale, height * scale);
+        Dimension size = new Dimension(width*scale + 80 * 3, height * scale);
         setPreferredSize(size);
 
         screen = new Screen(width, height);
+        uiManager = new UIManager();
         frame = new JFrame();
         key = new Keyboard();
         level = new SpawnLevel("src\\res\\levels\\spawn.png");
         TileCoordinate playerSpawn = new TileCoordinate(20,61);
-        player = new Player(playerSpawn.x(),playerSpawn.y(), key);
+        player = new Player("Cherno",playerSpawn.x(),playerSpawn.y(), key);
         level.add(player);
-        font = new Font();
 
         addKeyListener(key);
 
@@ -64,6 +66,10 @@ public class Game extends Canvas implements Runnable {
 
     public static int getWindowHeight() {
         return height * scale;
+    }
+
+    public static UIManager getUiManager(){
+        return uiManager;
     }
 
     public synchronized void start(){
@@ -117,6 +123,7 @@ public class Game extends Canvas implements Runnable {
     public void update(){
         key.update();
         level.update();
+        uiManager.update();
     }
 
     public void render(){
@@ -138,7 +145,10 @@ public class Game extends Canvas implements Runnable {
         }
 
         Graphics g = bs.getDrawGraphics();
-        g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+        g.setColor(new Color(0xff00ff));
+        g.fillRect(0,0,getWidth(), getHeight());
+        g.drawImage(image, 0, 0, width * scale, height * scale, null);
+        uiManager.render(g);
         // g.fillRect(Mouse.getX() - 32, Mouse.getY() - 32, 64, 64);
         //if(Mouse.getButton() != -1) g.drawString("Button: " + Mouse.getButton(), 80, 80);
         g.dispose();

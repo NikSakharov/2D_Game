@@ -8,17 +8,27 @@ import com.thecherno.rain.graphics.AnimatedSprite;
 import com.thecherno.rain.graphics.Screen;
 import com.thecherno.rain.graphics.Sprite;
 import com.thecherno.rain.graphics.SpriteSheet;
+import com.thecherno.rain.graphics.ui.*;
 import com.thecherno.rain.input.Keyboard;
 import com.thecherno.rain.input.Mouse;
+import com.thecherno.rain.util.ImageUtils;
+import com.thecherno.rain.util.Vector2i;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class Player extends Mob {
 
+    private String name;
     private Keyboard input;
     private Sprite sprite;
-    private int anim = 0;
     private boolean walking = false;
+
     private AnimatedSprite down = new AnimatedSprite(SpriteSheet.player_down, 32, 32, 3 );
     private AnimatedSprite up = new AnimatedSprite(SpriteSheet.player_up, 32, 32, 3 );
     private AnimatedSprite left = new AnimatedSprite(SpriteSheet.player_left, 32, 32, 3 );
@@ -28,18 +38,92 @@ public class Player extends Mob {
 
     private int fireRate = 0;
 
-    public Player(Keyboard input) {
+    private UIManager ui;
+    private UIProgressBar uiHealthBar;
+    private UIButton button;
+
+    private BufferedImage image;
+
+    @Deprecated
+    public Player(String name, Keyboard input) {
+        this.name = name;
         this.input = input;
         sprite = Sprite.player_forward;
-        animSprite = down;
+
+
     }
 
-    public Player(int x, int y, Keyboard input) {
+    public Player(String name, int x, int y, Keyboard input) {
+        this.name = name;
         this.x = x;
         this.y = y;
         this.input = input;
         sprite = Sprite.player_forward;
         fireRate = WizardProjectile.FIRE_RATE;
+
+        ui = Game.getUiManager();
+        UIPanel panel = (UIPanel) new UIPanel(new Vector2i((300 - 80) * 3, 0), new Vector2i(80 * 3, 168 * 3)).setColor(0x4f4f4f);
+        ui.addPanel(panel);
+        UILabel nameLabel = new UILabel(new Vector2i(40,200), name);
+        nameLabel.setColor(0xbbbbbb);
+        nameLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+        nameLabel.dropShadow = true;
+        panel.addComponent(nameLabel);
+
+        uiHealthBar = new UIProgressBar(new Vector2i(10, 215), new Vector2i(80 * 3 - 20, 20));
+        uiHealthBar.setColor(0x6a6a6a);
+        uiHealthBar.setForegroundColor(0xee3030);
+        panel.addComponent(uiHealthBar);
+
+        UILabel hpLabel = new UILabel(new Vector2i(uiHealthBar.position).add(new Vector2i(2,16)), "HP");
+        hpLabel.setColor(0xffffff);
+        hpLabel.setFont(new Font("Verdana", Font.PLAIN, 18));
+        panel.addComponent(hpLabel);
+        // Player default attributes
+        health = 100;
+
+        button = new UIButton(new Vector2i(10, 260), new Vector2i(100, 30), new UIActionListener() {
+            public void perform() {
+                System.out.println("Action performed");
+            }
+        });
+
+        button.setText("Hello");
+        panel.addComponent(button);
+
+        try {
+            image = ImageIO.read(new File("src\\res\\textures\\home.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        UIButton imageButton = new UIButton(new Vector2i(10, 360), image, new UIActionListener() {
+            public void perform() {
+                System.exit(0);
+            }
+        });
+        imageButton.setButtonListener(new UIButtonListener(){
+            public void entered(UIButton button) {
+                button.setImage(image);
+            }
+
+            public void exited(UIButton button){
+                button.setImage(image);
+            }
+
+            public void pressed(UIButton button) {
+                button.setImage(ImageUtils.changeBrightness(image,50));
+            }
+
+            public void released(UIButton button) {
+                button.setImage(image);
+            }
+        });
+        panel.addComponent(imageButton);
+    }
+
+    public String getName(){
+        return name;
     }
 
     public void update(){
@@ -74,6 +158,7 @@ public class Player extends Mob {
         clear();
         updateShooting();
 
+        uiHealthBar.setProgress(health / 100.0);
     }
 
     private void clear() {
@@ -82,8 +167,10 @@ public class Player extends Mob {
             if (p.isRemoved()) level.getProjectiles().remove(i);
         }
     }
-
+    int time = 0;
     private void updateShooting() {
+        if(Mouse.getX() > 660)
+            return;
         if (Mouse.getButton() == 1 && fireRate <= 0) {
             double dx = Mouse.getX() - Game.getWindowWidth() / 2;
             double dy = Mouse.getY() - Game.getWindowHeight() / 2;
