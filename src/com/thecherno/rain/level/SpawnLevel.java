@@ -1,9 +1,6 @@
 package com.thecherno.rain.level;
 
-import com.thecherno.rain.entity.mob.Chaser;
-import com.thecherno.rain.entity.mob.Dummy;
-import com.thecherno.rain.entity.mob.Shooter;
-import com.thecherno.rain.entity.mob.Star;
+import com.thecherno.rain.entity.mob.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

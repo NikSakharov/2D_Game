@@ -1,6 +1,7 @@
 package com.thecherno.rain.level;
 
 import com.thecherno.rain.entity.Entity;
+import com.thecherno.rain.entity.mob.Mob;
 import com.thecherno.rain.entity.mob.Player;
 import com.thecherno.rain.entity.particle.Particle;
 import com.thecherno.rain.entity.projectile.Projectile;
@@ -28,7 +29,7 @@ public class Level extends Layer {
     private List<Projectile> projectiles = new ArrayList<Projectile>();
     private List<Particle> particles = new ArrayList<Particle>();
 
-    private List<Player> players = new ArrayList<Player>();
+    private List<Mob> players = new ArrayList<Mob>();
 
     private Comparator<Node> nodeSorter = new Comparator<Node>(){
         public int compare(Node n0, Node n1) {
@@ -159,16 +160,21 @@ public class Level extends Layer {
         }
     }
 
-    public List<Player> getPlayers(){
+    public void addPlayer(Mob player){
+        player.init(this);
+        players.add(player);
+    }
+
+    public List<Mob> getPlayers(){
         return players;
     }
 
-    public Player getPlayerAt (int index){
+    public Mob getPlayerAt (int index){
         return players.get(index);
     }
 
     public Player getClientPlayer(){
-        return players.get(0);
+        return (Player) players.get(0);
     }
 
     public List<Node> findPath(Vector2i start, Vector2i goal){
@@ -242,12 +248,12 @@ public class Level extends Layer {
         return result;
     }
 
-    public List<Player> getPlayers(Entity e, int radius){
-        List<Player> result = new ArrayList<Player>();
+    public List<Mob> getPlayers(Entity e, int radius){
+        List<Mob> result = new ArrayList<Mob>();
         int ex = e.getX();
         int ey = e.getY();
         for (int i = 0; i < players.size(); i++) {
-            Player player = players.get(i);
+            Mob player = players.get(i);
             int x = player.getX();
             int y = player.getY();
             int dx = Math.abs(x - ex);

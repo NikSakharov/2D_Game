@@ -11,6 +11,7 @@ import com.thecherno.rain.level.SpawnLevel;
 import com.thecherno.rain.level.TileCoordinate;
 import com.thecherno.rain.events.Event;
 import com.thecherno.rain.events.EventListener;
+import com.thecherno.rain.net.player.NetPlayer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,7 +58,7 @@ public class Game extends Canvas implements Runnable, EventListener {
         TileCoordinate playerSpawn = new TileCoordinate(20,61);
         player = new Player("Cherno",playerSpawn.x(),playerSpawn.y(), key);
         level.add(player);
-
+        level.addPlayer(new NetPlayer());
         addKeyListener(key);
 
         Mouse mouse = new Mouse(this);

@@ -1,0 +1,29 @@
+[33mcommit 84e6bed77daf093da3b3cc28f98d72664479fcfc[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Nikita Sakharov <Noizer1mc@gmail.com>
+Date:   Thu Mar 7 23:55:10 2019 +0300
+
+    character animation and SpawnLevel
+
+[33mcommit ede3e4edff0b8c79da62c93ccb86f049c8e7d77d[m
+Author: Nikita Sakharov <Noizer1mc@gmail.com>
+Date:   Tue Mar 5 20:47:21 2019 +0300
+
+    created character sprite
+
+[33mcommit cd6d9a3c55f3d6e1a16300aec801abeebb38fcfc[m
+Author: Nikita Sakharov <Noizer1mc@gmail.com>
+Date:   Mon Mar 4 20:18:39 2019 +0300
+
+    render the map with random tiles
+
+[33mcommit 2df2d5447eaec57dda5d1787573a0fc19843179f[m
+Author: Nikita Sakharov <Noizer1mc@gmail.com>
+Date:   Mon Feb 25 23:55:12 2019 +0300
+
+    key input and sprites
+
+[33mcommit ecf147385aa44177e5042500880cdbfe3b58c0e5[m
+Author: Nikita Sakharov <Noizer1mc@gmail.com>
+Date:   Mon Feb 18 23:02:03 2019 +0300
+
+    initial commit (let's see how far it will get)
