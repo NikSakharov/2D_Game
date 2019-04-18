@@ -4,6 +4,10 @@ import com.thecherno.rain.Game;
 import com.thecherno.rain.entity.Entity;
 import com.thecherno.rain.entity.projectile.Projectile;
 import com.thecherno.rain.entity.projectile.WizardProjectile;
+import com.thecherno.rain.events.EventDispatcher;
+import com.thecherno.rain.events.EventListener;
+import com.thecherno.rain.events.types.MousePressedEvent;
+import com.thecherno.rain.events.types.MouseReleasedEvent;
 import com.thecherno.rain.graphics.AnimatedSprite;
 import com.thecherno.rain.graphics.Screen;
 import com.thecherno.rain.graphics.Sprite;
@@ -13,16 +17,18 @@ import com.thecherno.rain.input.Keyboard;
 import com.thecherno.rain.input.Mouse;
 import com.thecherno.rain.util.ImageUtils;
 import com.thecherno.rain.util.Vector2i;
+import com.thecherno.rain.events.Event;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class Player extends Mob {
+public class Player extends Mob implements EventListener {
 
     private String name;
     private Keyboard input;
@@ -43,6 +49,8 @@ public class Player extends Mob {
     private UIButton button;
 
     private BufferedImage image;
+
+    private boolean shooting = false;
 
     @Deprecated
     public Player(String name, Keyboard input) {
@@ -104,7 +112,7 @@ public class Player extends Mob {
         });
         imageButton.setButtonListener(new UIButtonListener(){
             public void entered(UIButton button) {
-                button.setImage(image);
+                button.setImage(ImageUtils.changeBrightness(image, -50));
             }
 
             public void exited(UIButton button){
@@ -124,6 +132,12 @@ public class Player extends Mob {
 
     public String getName(){
         return name;
+    }
+
+    public void onEvent(Event event){
+        EventDispatcher dispatcher = new EventDispatcher(event);
+        dispatcher.dispatch(Event.Type.MOUSE_PRESSED, (Event e) -> onMousePressed((MousePressedEvent)e));
+        dispatcher.dispatch(Event.Type.MOUSE_RELEASED, (Event e) -> onMouseReleased((MouseReleasedEvent)e));
     }
 
     public void update(){
@@ -161,22 +175,41 @@ public class Player extends Mob {
         uiHealthBar.setProgress(health / 100.0);
     }
 
+    private void updateShooting(){
+        if(!shooting || fireRate > 0)
+            return;
+
+        double dx = Mouse.getX() - Game.getWindowWidth() / 2;
+        double dy = Mouse.getY() - Game.getWindowHeight() / 2;
+        double dir = Math.atan2(dy,dx);
+        shoot(x,y,dir);
+        fireRate = WizardProjectile.FIRE_RATE;
+    }
+
+    public boolean onMousePressed(MousePressedEvent e){
+        if(Mouse.getX() > 660)
+            return false;
+
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            shooting = true;
+
+            return true;
+        }
+        return false;
+    }
+
+    public boolean onMouseReleased(MouseReleasedEvent e){
+        if (e.getButton() == MouseEvent.BUTTON1){
+            shooting = false;
+            return true;
+        }
+        return false;
+    }
+
     private void clear() {
         for(int i = 0; i < level.getProjectiles().size(); i++) {
             Projectile p = level.getProjectiles().get(i);
             if (p.isRemoved()) level.getProjectiles().remove(i);
-        }
-    }
-    int time = 0;
-    private void updateShooting() {
-        if(Mouse.getX() > 660)
-            return;
-        if (Mouse.getButton() == 1 && fireRate <= 0) {
-            double dx = Mouse.getX() - Game.getWindowWidth() / 2;
-            double dy = Mouse.getY() - Game.getWindowHeight() / 2;
-            double dir = Math.atan2(dy,dx);
-            shoot(x,y,dir);
-            fireRate = WizardProjectile.FIRE_RATE;
         }
     }
 
