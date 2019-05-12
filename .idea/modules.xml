@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/serialization/Raincloud.iml" filepath="$PROJECT_DIR$/serialization/Raincloud.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Server/Networking.iml" filepath="$PROJECT_DIR$/Server/Networking.iml" />
       <module fileurl="file://$PROJECT_DIR$/java.iml" filepath="$PROJECT_DIR$/java.iml" />
     </modules>
   </component>
